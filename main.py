@@ -1,4 +1,4 @@
-from flask import Flask,render_template, redirect, requests
+from flask import Flask,render_template, redirect, request
 
 app = Flask("Flask_Web_Scrapper")
 
@@ -8,7 +8,7 @@ def home():
 
 @app.route("/report", methods=["GET"])
 def results():
-    word = requests.args.get('word')
+    word = request.args.get('word')
     if word:
         word = word.lower()
     else:

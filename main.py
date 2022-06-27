@@ -1,4 +1,5 @@
 from flask import Flask,render_template, redirect, request
+from scrapper import get_jobs 
 
 app = Flask("Flask_Web_Scrapper")
 
@@ -12,7 +13,9 @@ def results():
     if word:
         word = word.lower()
     else:
-        return redirect("home.html")
-    return render_template("report.html",job=word)
+        return redirect("/")
+    jobs = get_jobs(word)
+
+    return render_template("report.html",job=word,resultsNumber=len(jobs))
 
 app.run(host="127.0.0.1")

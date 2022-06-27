@@ -8,12 +8,15 @@ def public_page(url):
     soup = BeautifulSoup(result.text, 'html.parser')
     return soup
 
-def last_page(url):
+
+def get_last_page(url):
     url = public_page(url)
     pages = url.find("div", {"class": "pagination"}).find_all("a")
-    last_page = pages[-1].stirng
+    last_page = pages[-1].string
     if last_page == '다음':
         last_page = pages[-2].string
+    else:
+        int(last_page)
     return int(last_page)
 
 
@@ -56,8 +59,8 @@ def page_list(last_page,word):
     return jobs
 
 
-def get_jobs(url,word):
+def get_jobs(word):
     url = f"https://www.saramin.co.kr/zf_user/search/recruit?searchType=search&company_cd=0%2C1%2C2%2C3%2C4%2C5%2C6%2C7%2C9%2C10&keydownAccess=&searchword={word}&panel_type=&search_optional_item=y&search_done=y&panel_count=y&recruitPage=1&recruitSort=relation&recruitPageCount={Page_count}"
-    last_page = last_page(url)
+    last_page = get_last_page(url)
     jobs = page_list(last_page,word)
     return jobs

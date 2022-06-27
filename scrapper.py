@@ -57,5 +57,7 @@ def page_list(last_page,word):
 
 
 def get_jobs(url,word):
+    url = f"https://www.saramin.co.kr/zf_user/search/recruit?searchType=search&company_cd=0%2C1%2C2%2C3%2C4%2C5%2C6%2C7%2C9%2C10&keydownAccess=&searchword={word}&panel_type=&search_optional_item=y&search_done=y&panel_count=y&recruitPage=1&recruitSort=relation&recruitPageCount={Page_count}"
     last_page = last_page(url)
     jobs = page_list(last_page,word)
+    return jobs

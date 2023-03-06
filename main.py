@@ -2,7 +2,7 @@ from flask import Flask,render_template, redirect, request, send_file
 from scrapper import get_jobs 
 from exporter import save_to_file as save_file
 
-app = Flask("Flask_Web_Scrapper")
+app = Flask(__name__)
 
 fake_db = {}
 
@@ -40,4 +40,5 @@ def export():
     except:
         return redirect('/')
         
-app.run(host="127.0.0.1")
+if __name__ == '__main__':
+    app.run()

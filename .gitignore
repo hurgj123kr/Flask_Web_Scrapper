@@ -158,7 +158,7 @@ uploads/
 node_modules/
 
 # sttic img
-.static/assets/*
+static/assets/
 
 # Elastic Beanstalk Files
 

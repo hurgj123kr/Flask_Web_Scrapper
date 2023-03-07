@@ -6,11 +6,11 @@ application = Flask(__name__)
 
 fake_db = {}
 
-@app.route("/", methods=["GET"])
+@application.route("/", methods=["GET"])
 def home():
     return render_template("home.html")
 
-@app.route("/report", methods=["GET"])
+@application.route("/report", methods=["GET"])
 def results():
     word = request.args.get('word')
     if word:
@@ -25,7 +25,7 @@ def results():
         return redirect("/")
     return render_template("report.html",job=word,resultsNumber=len(jobs), jobs=jobs)
 
-@app.route("/export", methods=["GET"])
+@application.route("/export", methods=["GET"])
 def export():
     try:
         word = request.args.get('word')

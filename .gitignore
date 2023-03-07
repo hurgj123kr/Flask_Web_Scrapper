@@ -157,8 +157,8 @@ cython_debug/
 uploads/
 node_modules/
 
-# sttic
-static/assets/*
+# sttic img
+.static/assets/*
 
 # Elastic Beanstalk Files
 

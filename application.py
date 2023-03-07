@@ -2,7 +2,7 @@ from flask import Flask,render_template, redirect, request, send_file
 from scrapper import get_jobs 
 from exporter import save_to_file as save_file
 
-applcation = Flask(__name__)
+application = Flask(__name__)
 
 fake_db = {}
 
@@ -41,4 +41,4 @@ def export():
         return redirect('/')
         
 if __name__ == '__main__':
-    applcation.run()
+    application.run()

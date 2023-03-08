@@ -160,9 +160,5 @@ node_modules/
 # sttic img
 static/assets/
 
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
 
 

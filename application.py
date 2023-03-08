@@ -1,6 +1,8 @@
 from flask import Flask,render_template, redirect, request, send_file
+from flask.json import JSONEncoder
 from scrapper import get_jobs 
 from exporter import save_to_file as save_file
+
 
 application = Flask(__name__)
 
@@ -41,4 +43,4 @@ def export():
         return redirect('/')
         
 if __name__ == '__main__':
-    application.run()
+    application.run(host="127.0.0.1")

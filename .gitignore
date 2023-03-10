@@ -157,8 +157,7 @@ cython_debug/
 uploads/
 node_modules/
 
-# sttic img
-static/assets/
-
+#test
+test.py
 
 

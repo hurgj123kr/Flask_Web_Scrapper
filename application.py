@@ -1,12 +1,14 @@
+import os
 from flask import Flask,render_template, redirect, request, send_file
 from flask.json import JSONEncoder
 from scrapper import get_jobs 
 from exporter import save_to_file as save_file
 
 
-application = Flask(__name__)
 
-fake_db = {}
+result_db = {}
+
+application = Flask(__name__)
 
 @application.route("/", methods=["GET"])
 def home():
@@ -17,12 +19,12 @@ def results():
     word = request.args.get('word')
     if word:
         word = word.lower()
-        existing_jobs = fake_db.get(word)
+        existing_jobs = result_db.get(word)
         if existing_jobs:
             jobs = existing_jobs
         else:
             jobs = get_jobs(word)
-            fake_db[word] =jobs
+            result_db[word] =jobs
     else:
         return redirect("/")
     return render_template("report.html",job=word,resultsNumber=len(jobs), jobs=jobs)
@@ -34,7 +36,7 @@ def export():
         if not word:
             raise Exception()
         word = word.lower()
-        jobs = fake_db.get(word)
+        jobs = result_db.get(word)
         if not jobs:
             raise Exception()
         save_file(jobs,word)

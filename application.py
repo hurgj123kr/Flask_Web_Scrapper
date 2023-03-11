@@ -7,7 +7,7 @@ from scrapper import get_jobs
 from exporter import save_to_file as save_file
 
 load_dotenv(find_dotenv())
-conn = pymysql.connect(host='127.0.0.1', user='root', password=os.getenv('DB_PASSWORD'), db='FLASK_test', charset='utf8')
+conn = pymysql.connect(host=os.getenv('DB_HOST'), user='admin', password=os.getenv('DB_PASSWORD'), db='sys', charset='utf8')
 cursor = conn.cursor()
 db = {}
 application = Flask(__name__)

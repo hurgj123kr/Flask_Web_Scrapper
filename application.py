@@ -2,7 +2,6 @@ import os
 import pymysql
 from dotenv import load_dotenv,find_dotenv
 from flask import Flask,render_template, redirect, request, send_file, send_from_directory
-from flask.json import JSONEncoder
 from scrapper import get_jobs 
 from exporter import save_to_file as save_file
 

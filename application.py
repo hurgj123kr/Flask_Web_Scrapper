@@ -2,26 +2,24 @@ import os
 from dotenv import load_dotenv,find_dotenv
 from flask import Flask,render_template, redirect, request, send_file, send_from_directory
 from flask_mysqldb import MySQL
+from flask_cors import CORS
 from s3_con import s3_connection, s3_put_object
 from scrapper import get_jobs 
 from exporter import save_to_file as save_file
 
 
 load_dotenv(find_dotenv())
-SQLALCHEMY_ECHO = True
 application = Flask(__name__)
-application.secret_key=os.getenv("AWS_SECRET_ACCESS_KEY")
-application.config["SESSION_TYPE"] = "memcached"
-application.config["SECRET_KEY"] = os.getenv("AWS_SECRET_ACCESS_KEY")
+CORS(application)
+mysql = MySQL(application)
 
 # Config MySQL
 application.config["MYSQL_HOST"] = os.getenv("DB_HOST")
 application.config["MYSQL_USER"] = "admin"
 application.config["MYSQL_PASSWORD"] = os.getenv("DB_PASSWORD")
 application.config["MYSQL_DB"] = "sys"
-application.config["MYSQL_CURSORCLASS"] = "DictCursor"
+
 # init MYSQL
-mysql = MySQL(application)
 cursor = mysql.connection.cursor()
 db = {}
 

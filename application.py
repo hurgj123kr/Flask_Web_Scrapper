@@ -2,6 +2,7 @@ import os
 import pymysql
 from dotenv import load_dotenv,find_dotenv
 from flask import Flask,render_template, redirect, request, send_file, send_from_directory
+from s3_con import s3_connection, s3_put_object
 from scrapper import get_jobs 
 from exporter import save_to_file as save_file
 
@@ -10,6 +11,19 @@ conn = pymysql.connect(host=os.getenv('DB_HOST'), user='admin', password=os.gete
 cursor = conn.cursor()
 db = {}
 application = Flask(__name__)
+
+s3 = s3_connection()
+
+@application.route('/fileUpload', methods=['POST'])
+def upload():
+    f = request.files['file']
+    f.save("./temp")
+    
+    ret = s3_put_object(s3, os.getenv("AWS_S3_BUCKET_NAME"), "./temp", ".temp")
+    if ret :
+        print("파일 저장 성공")
+    else:
+        print("파일 저장 실패")
 
 
 @application.route("/", methods=["GET"])

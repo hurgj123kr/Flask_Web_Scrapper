@@ -2,16 +2,16 @@ import os
 import mysql.connector
 from dotenv import load_dotenv,find_dotenv
 from flask import Flask,render_template, redirect, request, send_file, send_from_directory
-from s3_con import s3_connection, s3_put_object
+from flask_s3 import FlaskS3, create_all
 from scrapper import get_jobs 
 from exporter import save_to_file as save_file
+from flask import Flask
 
 load_dotenv(find_dotenv())
 application = Flask(__name__)
-application.config['MYSQL_HOST'] = os.getenv("DB_HOST")
-application.config['MYSQL_DB'] = 'sys'
-application.config['MYSQL_USER'] = 'admin'
-application.config['MYSQL_PASSWORD'] = os.getenv("DB_PASSWORD")
+application.config.from_object('config.Config')
+s3 = FlaskS3(application)
+create_all(application)
 
 conn = mysql.connector.connect(
     host=application.config['MYSQL_HOST'],
@@ -21,19 +21,6 @@ conn = mysql.connector.connect(
 )
 cursor = conn.cursor()
 db = {}
-
-s3 = s3_connection()
-
-@application.route('/fileUpload', methods=['POST'])
-def upload():
-    f = request.files['file']
-    f.save("./temp")
-    
-    ret = s3_put_object(s3, os.getenv("AWS_S3_BUCKET_NAME"), "./temp", ".temp")
-    if ret :
-        print("파일 저장 성공")
-    else:
-        print("파일 저장 실패")
 
 
 @application.route("/", methods=["GET"])

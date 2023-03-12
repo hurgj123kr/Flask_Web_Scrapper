@@ -1,28 +1,26 @@
 import os
+import mysql.connector
 from dotenv import load_dotenv,find_dotenv
 from flask import Flask,render_template, redirect, request, send_file, send_from_directory
-from flask_mysqldb import MySQL
-from flask_cors import CORS
 from s3_con import s3_connection, s3_put_object
 from scrapper import get_jobs 
 from exporter import save_to_file as save_file
 
-
 load_dotenv(find_dotenv())
 application = Flask(__name__)
-CORS(application)
-mysql = MySQL(application)
+application.config['MYSQL_HOST'] = os.getenv("DB_HOST")
+application.config['MYSQL_DB'] = 'sys'
+application.config['MYSQL_USER'] = 'admin'
+application.config['MYSQL_PASSWORD'] = os.getenv("DB_PASSWORD")
 
-# Config MySQL
-application.config["MYSQL_HOST"] = os.getenv("DB_HOST")
-application.config["MYSQL_USER"] = "admin"
-application.config["MYSQL_PASSWORD"] = os.getenv("DB_PASSWORD")
-application.config["MYSQL_DB"] = "sys"
-
-# init MYSQL
-cursor = mysql.connection.cursor()
+conn = mysql.connector.connect(
+    host=application.config['MYSQL_HOST'],
+    database=application.config['MYSQL_DB'],
+    user=application.config['MYSQL_USER'],
+    password=application.config['MYSQL_PASSWORD']
+)
+cursor = conn.cursor()
 db = {}
-
 
 s3 = s3_connection()
 
@@ -66,8 +64,8 @@ def results():
                     cursor.execute(sql, (Title, Company, Location, Link ))              
     else:
         return redirect("/")
-    mysql.connection.commit()
-    cursor.close()  
+    conn.commit()
+    conn.close()  
     return render_template("report.html",job=word,resultsNumber=len(jobs), jobs=jobs)
 
 @application.route("/export", methods=["GET"])

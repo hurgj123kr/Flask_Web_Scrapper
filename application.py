@@ -1,16 +1,30 @@
 import os
-import pymysql
 from dotenv import load_dotenv,find_dotenv
 from flask import Flask,render_template, redirect, request, send_file, send_from_directory
+from flask_mysqldb import MySQL
 from s3_con import s3_connection, s3_put_object
 from scrapper import get_jobs 
 from exporter import save_to_file as save_file
 
+
 load_dotenv(find_dotenv())
-conn = pymysql.connect(host=os.getenv('DB_HOST'), user='admin', password=os.getenv('DB_PASSWORD'), db='sys', charset='utf8')
-cursor = conn.cursor()
-db = {}
+SQLALCHEMY_ECHO = True
 application = Flask(__name__)
+application.secret_key=os.getenv("AWS_SECRET_ACCESS_KEY")
+application.config["SESSION_TYPE"] = "memcached"
+application.config["SECRET_KEY"] = os.getenv("AWS_SECRET_ACCESS_KEY")
+
+# Config MySQL
+application.config["MYSQL_HOST"] = os.getenv("DB_HOST")
+application.config["MYSQL_USER"] = "admin"
+application.config["MYSQL_PASSWORD"] = os.getenv("DB_PASSWORD")
+application.config["MYSQL_DB"] = "sys"
+application.config["MYSQL_CURSORCLASS"] = "DictCursor"
+# init MYSQL
+mysql = MySQL(application)
+cursor = mysql.connection.cursor()
+db = {}
+
 
 s3 = s3_connection()
 
@@ -54,8 +68,8 @@ def results():
                     cursor.execute(sql, (Title, Company, Location, Link ))              
     else:
         return redirect("/")
-    conn.commit()
-    conn.close()  
+    mysql.connection.commit()
+    cursor.close()  
     return render_template("report.html",job=word,resultsNumber=len(jobs), jobs=jobs)
 
 @application.route("/export", methods=["GET"])

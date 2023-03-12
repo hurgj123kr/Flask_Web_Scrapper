@@ -9,8 +9,8 @@ from flask import Flask
 
 load_dotenv(find_dotenv())
 application = Flask(__name__)
-application.config.from_object('config.Config')
 application.config['AWS_S3_BUCKET_NAME'] = 'search-jobs'
+application.config.from_object('config.Config')
 s3 = FlaskS3(application)
 create_all(application)
 

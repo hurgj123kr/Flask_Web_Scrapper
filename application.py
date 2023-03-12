@@ -1,7 +1,7 @@
 import os
 import pymysql
 from dotenv import load_dotenv,find_dotenv
-from flask import Flask,render_template, redirect, request, send_file
+from flask import Flask,render_template, redirect, request, send_file, send_from_directory
 from flask.json import JSONEncoder
 from scrapper import get_jobs 
 from exporter import save_to_file as save_file
@@ -12,9 +12,14 @@ cursor = conn.cursor()
 db = {}
 application = Flask(__name__)
 
+
 @application.route("/", methods=["GET"])
 def home():
     return render_template("home.html")
+
+@application.route("/favicon.ico")
+def favicon():
+    return send_from_directory(os.path.join(application.root_path, 'static'), 'favicon.ico')    
 
 @application.route("/report", methods=["GET"])
 def results():

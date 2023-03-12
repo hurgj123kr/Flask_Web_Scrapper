@@ -19,7 +19,7 @@ def home():
 
 @application.route("/favicon.ico")
 def favicon():
-    return send_from_directory(os.path.join(application.root_path, 'static'), 'favicon.ico')    
+    return send_from_directory(os.path.join(application.root_path, 'static/assets'), 'favicon.ico')    
 
 @application.route("/report", methods=["GET"])
 def results():

@@ -19,7 +19,7 @@ def home():
 
 @application.route("/favicon.ico")
 def favicon():
-    return send_from_directory(os.path.join(application.root_path, 'static/assets'), 'favicon.ico',mimetype='image/vnd.microsoft.icon')    
+    return send_from_directory(os.path.join(application.root_path, 'static'), 'favicon.ico',mimetype='image/vnd.microsoft.icon')    
 
 @application.route("/report", methods=["GET"])
 def results():

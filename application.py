@@ -2,17 +2,16 @@ import os
 import mysql.connector
 from dotenv import load_dotenv,find_dotenv
 from flask import Flask,render_template, redirect, request, send_file, send_from_directory
-from flask_s3 import FlaskS3, create_all
 from scrapper import get_jobs 
 from exporter import save_to_file as save_file
 from flask import Flask
 
 load_dotenv(find_dotenv())
 application = Flask(__name__)
+application.config['AWS_ACCESS_KEY_ID'] = os.getenv('AWS_ACCESS_KEY_ID')
+application.config['AWS_SECRET_ACCESS_KEY'] = os.getenv('AWS_SECRET_ACCESS_KEY')
 application.config['AWS_S3_BUCKET_NAME'] = 'search-jobs'
 application.config.from_object('config.Config')
-s3 = FlaskS3(application)
-create_all(application)
 
 conn = mysql.connector.connect(
     host=application.config['MYSQL_HOST'],

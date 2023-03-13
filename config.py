@@ -11,6 +11,3 @@ class Config(object):
     MYSQL_USER = 'admin'
     MYSQL_PASSWORD = os.getenv("DB_PASSWORD")
     ACL = 'public-read'
-    AWS_S3_BUCKET_NAME = os.getenv('AWS_S3_BUCKET_NAME')
-    AWS_S3_BUCKET_REGION = os.getenv('AWS_S3_BUCKET_REGION') 
-    USE_S3 = True

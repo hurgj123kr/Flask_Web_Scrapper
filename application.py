@@ -13,17 +13,13 @@ application = Flask(__name__)
 application.config['AWS_ACCESS_KEY_ID'] = os.getenv('AWS_ACCESS_KEY_ID')
 application.config['AWS_SECRET_ACCESS_KEY'] = os.getenv('AWS_SECRET_ACCESS_KEY')
 application.config['FLASKS3_BUCKET_NAME'] = os.getenv('AWS_S3_BUCKET_NAME')
-application.config['MYSQL_HOST'] = os.getenv("DB_HOST")
-application.config['MYSQL_DB'] = 'sys'
-application.config['MYSQL_USER'] = 'admin'
-application.config['MYSQL_PASSWORD'] = os.getenv("DB_PASSWORD")
 s3 = FlaskS3(application)
 
 conn = mysql.connector.connect(
-    host=application.config['MYSQL_HOST'],
-    database=application.config['MYSQL_DB'],
-    user=application.config['MYSQL_USER'],
-    password=application.config['MYSQL_PASSWORD']
+    host=os.getenv('DB_HOST'),
+    database='sys',
+    user='admin',
+    password=os.getenv('DB_PASSWORD')
 )
 cursor = conn.cursor()
 db = {}
